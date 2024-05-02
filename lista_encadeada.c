@@ -1,4 +1,5 @@
-/*Projeto 2: Lista Encadeada
+/*Projeto 2: Lista Encadeada 
+FUNCIONLIDADES
     0) Sair
     01) Zerar lista
     02) Exibir lista
@@ -16,6 +17,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <malloc.h>
 #include <stdbool.h>//Import the boolean header file 
 
 typedef struct Node{
@@ -33,7 +35,7 @@ struct Node* createNode(int x){
 
     //Verifica se houve falha na alocação
     if(novo == NULL){
-        printf("Error: Falha ao alocar memória para o novo nó.\n");
+        printf("\nError: Falha ao alocar memória para o novo nó.\n");
         exit(1); 
     };
 
@@ -45,24 +47,27 @@ struct Node* createNode(int x){
 };
 //Remover todos os nós da Lista
 void clearLista(){
-    celula *curr = cabeca, *aux;
+    celula *curr = cabeca, *aux=NULL;
+
     while (curr != NULL){
         aux = curr;
         curr = curr->prox;
         free(aux);
     };
     
+    int x = tamanhoLista();
+    printf("\nLista encadeada foi zerada %d\n",x);
 };
 
 //Imprime a lista encadeada criada
 void printList(){
     celula *aux = cabeca;
-    printf("\n\nImprime Lista encadeada: ");
+    printf("\nImprime Lista encadeada: ");
     while(aux != NULL){
         printf("%d ",aux->elemento);
         aux = aux->prox;
     };
-    printf("\n\n\n");
+    printf("\n");
     return;
 };
 
@@ -74,14 +79,14 @@ void insereElement(int x,int y){
     if(cabeca==NULL || y==NULL){//insere elemento no inicio
         if(cabeca==NULL){
             cabeca = novo;
-            printf("Lista Criada com sucesso\n" );
-            printf("  Elemento %d inserido a lista\n",cabeca->elemento);
+            printf("\nLista Criada com sucesso\n" );
+            printf("\n  Elemento %d inserido a lista\n",cabeca->elemento);
             return;
         };
         novo->prox = cabeca;
         cabeca = novo;
         
-        printf("  Elemento %d inserido a lista\n",cabeca->elemento);
+        printf("\n  Elemento %d inserido a lista na cabeca\n",cabeca->elemento);
         return;
     };
     
@@ -92,14 +97,14 @@ void insereElement(int x,int y){
                 temp=aux->prox;
                 aux->prox = novo;
                 novo->prox =  temp;
-                printf("  Elemento %d inserido com sucesso na posicao do elemento %d\n",novo->elemento,y);
+                printf("\n  Elemento %d inserido com sucesso na posicao do elemento %d\n",novo->elemento,y);
                 return;
             };
             aux = aux->prox;
         };
         aux->prox = novo;
     }
-    printf("  Elemento %d inserido com sucesso\n",novo->elemento);
+    printf("\n  Elemento %d inserido com sucesso na cauda\n",novo->elemento);
     return;
 };
 
@@ -171,15 +176,14 @@ void inverterLista(){
     }while(next->prox!=NULL);
     aux->prox = prev;
     cabeca = aux;
-    printf("A lista foi invertida");
+    printf("\nA lista foi invertida\n");
     printList();
     return;
 };
 
 //Ordenar lista encadeada
-void ordeneList(celula *curr,bool sort){
-    celula *temp;
-    curr = cabeca;
+void ordeneList(bool sort){
+    celula *temp, *curr = cabeca;
 
     while(curr->prox != NULL){
         if(curr->elemento > curr->prox->elemento){
@@ -197,21 +201,21 @@ void ordeneList(celula *curr,bool sort){
         printList();
         return;
     }else{
-        ordeneList(cabeca,true);
+        ordeneList(true);
         return;
     };
 };
 
 //Procura um elemento na lista encadeada
-void tamanhoLista(){
+int tamanhoLista(){
     int i = 0;
     celula *aux = cabeca;
     while (aux != NULL){
         i++;
         aux = aux->prox;
     };
-    printf("\nTamanho da lista: %d\n\n",i);
-    return;
+    printf("\nTamanho da lista: %d\n",i);
+    return i;
 };
 
 int menu(opcao){
@@ -286,7 +290,7 @@ int menu(opcao){
 
             case 11://Ordenar lista
                 printf("\n\nOPCAO 11     ");
-                ordeneList(cabeca,true);
+                ordeneList(true);
                 break;
 
             case 12://Obter tamanho da lista
@@ -329,12 +333,12 @@ int main(){
     tamanhoLista();
     removeElement(NULL);//Remover elemento da cabeça
     printList();
-    removeElement(26);//Remover elemento 26
+    removeElement(5);//Remover elemento 5
     printList();
     removeElement(2);//Como elemento não existe, remove elemento da calda
     printList();
     tamanhoLista();
-    ordeneList(cabeca,true);
+    ordeneList(true);
     tamanhoLista();
     searchElement(15);//Procura elemento 15
     searchElement(18);//Procura elemento 18
